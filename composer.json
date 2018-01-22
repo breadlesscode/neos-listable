@@ -1,7 +1,7 @@
 {
-    "description": "",
+    "description": "Neos Fusion implementation for listable things",
     "type": "neos-plugin",
-    "name": "breadlesscode/listable",
+    "name": "breadlesscode/neos-listable",
     "require": {
         "neos/neos": "~3.3",
         "neos/flow": "*"
