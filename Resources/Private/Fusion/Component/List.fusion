@@ -1,0 +1,43 @@
+prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
+    paginated = ${ false }
+    collection = ${ [] }
+    itemsPerPage = ${ 10 }
+    itemRenderer = 'Breadlesscode.Listable:ListItem'
+
+    _currentPage = ${request.arguments.currentPage || 1}
+
+    renderer = Neos.Fusion:Array {
+        @context.data = Neos.Fusion:RawArray {
+            collection = Neos.Fusion:Case {
+                @context.limit = ${props._currentPage * props.itemsPerPage}
+                @context.offset = ${(props._currentPage - 1) * props.itemsPerPage}
+                elasticSearch {
+                    condition = ${Type.instance(props.collection, 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder')}
+                    renderer = ${props.collection}
+                    renderer.@process.limitAndOffset = ${value.limit(limit).from(offset)}
+                    renderer.@process.limitAndOffset.@if.paginated = ${ props.paginated }
+                    renderer.@process.execute = ${value.execute()}
+                }
+                default {
+                    condition = ${true}
+                    renderer = ${Type.instance(props.collection, 'Neos\Eel\FlowQuery\FlowQuery') ? props.collection : q(props.collection)}
+                    renderer.@process.slice = ${value.slice(offset, limit)}
+                    renderer.@process.slice.@if.paginated = ${ props.paginated }
+                    renderer.@process.execute = ${value.get()}
+                }
+            }
+            totalCount = ${Type.getType(props.collection) == 'array' ? q(props.collection).count() : props.collection.count()}
+        }
+        list = Neos.Fusion:Collection {
+            collection = ${ data.collection }
+            itemName = 'item'
+            itemRenderer = Neos.Fusion:Case {
+                prop {
+                    condition = ${true}
+                    type = ${ props.itemRenderer }
+                }
+            }
+        }
+        pagination >
+    }
+}

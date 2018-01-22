@@ -1,0 +1,19 @@
+{
+    "description": "",
+    "type": "neos-plugin",
+    "name": "breadlesscode/listable",
+    "require": {
+        "neos/neos": "~3.3",
+        "neos/flow": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Breadlesscode\\Listable\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Breadlesscode.Listable"
+        }
+    }
+}

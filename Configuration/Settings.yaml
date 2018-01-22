@@ -1,0 +1,18 @@
+Neos:
+  Flow:
+    mvc:
+      routes:
+        'Breadlesscode.Listable':
+          position: 'before Neos.Neos'
+          variables:
+            pageSeparator: '~p'
+            defaultUriSuffix: '.html'
+  Neos:
+    fusion:
+      autoInclude:
+        Breadlesscode.Listable: true
+    userInterface:
+      translation:
+        autoInclude:
+          Breadlesscode.Listable:
+            - 'NodeTypes/*'
