@@ -1,4 +1,4 @@
-# Neos Listable
+# Neos Listable !! WIP !!
 [![Latest Stable Version](https://poser.pugx.org/breadlesscode/neos-listable/v/stable)](https://packagist.org/packages/breadlesscode/neos-listable)
 [![Downloads](https://img.shields.io/packagist/dt/breadlesscode/neos-listable.svg)](https://packagist.org/packages/breadlesscode/neos-listable)
 [![License](https://img.shields.io/github/license/breadlesscode/neos-listable.svg)](LICENSE)
