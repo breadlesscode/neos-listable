@@ -4,6 +4,7 @@ namespace Breadlesscode\Listable\Fusion;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
+use Neos\Fusion\Core\Runtime;
 
 class PaginationArrayImplementation extends AbstractFusionObject
 {
@@ -11,24 +12,55 @@ class PaginationArrayImplementation extends AbstractFusionObject
     protected $itemsPerPage;
     protected $maximumNumberOfLinks;
     protected $totalCount;
+    protected $numberOfPages;
+    protected $firstPage;
+    protected $lastPage;
     /**
      * @inheritDoc
      */
     public function __construct(Runtime $runtime, $path, $fusionObjectName)
     {
         parent::__construct($runtime, $path, $fusionObjectName);
+
         $this->currentPage = \intval($this->fusionValue('currentPage'));
         $this->itemsPerPage = \intval($this->fusionValue('itemsPerPage'));
-        $this->maximumNumberOfLinks = \intval($this->fusionValue('maximumNumberOfLinks')) - 2;
+        $this->maximumNumberOfLinks = \intval($this->fusionValue('maximumNumberOfLinks'));
         $this->totalCount = \intval($this->fusionValue('totalCount'));
+        $this->paginationConfig = $this->fusionValue('paginationConfig');
+        $this->numberOfPages = $this->getNumberOfPages();
+
+        $this->calculateFirstAndLastPage();
+    }
+    /**
+     * calculates the first and last page to show
+     *
+     * @return void
+     */
+    protected function calculateFirstAndLastPage()
+    {
+        $delta = \floor($this->maximumNumberOfLinks / 2);
+        $firstPage = $this->currentPage - $delta;
+        $lastPage = $this->currentPage + $delta + ($this->maximumNumberOfLinks % 2 === 0 ? 1 : 0);
+
+        if ($firstPage < 1) {
+            $lastPage -= $firstPage - 1;
+        }
+        if ($lastPage > $this->numberOfPages) {
+            $firstPage -= ($lastPage - $this->numberOfPages);
+        }
+
+        $this->firstPage = \max($firstPage, 1);
+        $this->lastPage = \min($lastPage, $this->numberOfPages);
     }
     /**
      * calculates the number of pages
+     *
      * @return integer
      */
     protected function getNumberOfPages()
     {
         $numberOfPages = \ceil($this->totalCount / $this->itemsPerPage);
+
         if ($this->maximumNumberOfLinks > $numberOfPages) {
             return $numberOfPages;
         }
@@ -36,41 +68,87 @@ class PaginationArrayImplementation extends AbstractFusionObject
     }
     /**
      * get an array of pages to display
+     *
      * @return array
      */
-    protected function getPageRangeArray($numberOfPages)
+    protected function getPageArray()
     {
-        $delta = \floor($this->maximumNumberOfLinks / 2);
-        $rangeStart = $this->currentPage - $delta;
-        $rangeEnd = $this->currentPage + $delta + ($this->maximumNumberOfLinks % 2 === 0 ? 1 : 0);
-        if ($rangeStart < 1) {
-            $rangeEnd -= $rangeStart - 1;
+        $range = \range($this->firstPage, $this->lastPage);
+        $pageArray = [];
+
+        foreach ($range as $page) {
+            $pageArray[] = [
+                'page' => $page,
+                'label' => $page,
+                'type' => 'page'
+            ];
         }
-        if ($rangeEnd > $numberOfPages) {
-            $rangeStart -= ($rangeEnd - $numberOfPages);
-        }
-        $rangeStart = \max($rangeStart, 1);
-        $rangeEnd = \min($rangeEnd, $numberOfPages);
-        return \range($rangeStart, $rangeEnd);
+
+        return $pageArray;
     }
     /**
-     * @return Array
+     * add a item to the start of the page array
+     *
+     * @param array $pageArray
+     * @param integer $page
+     * @param string $type
+     * @return array
+     */
+    protected function addItemToTheStartOfPageArray($pageArray, $page, $type)
+    {
+        if ($this->firstPage > 1) {
+            array_unshift($pageArray, [
+                'page' => $page,
+                'label' => $this->paginationConfig['labels'][$type],
+                'type' => $type
+            ]);
+        }
+
+        return $pageArray;
+    }
+    /**
+     * add a item to the end of the page array
+     *
+     * @param array $pageArray
+     * @param integer $page
+     * @param string $type
+     * @return array
+     */
+    protected function addItemToTheEndOfPageArray($pageArray, $page, $type)
+    {
+        if ($this->lastPage  < $this->numberOfPages) {
+            $pageArray[] = [
+                'page' => $page,
+                'label' => $this->paginationConfig['labels'][$type],
+                'type' => $type
+            ];
+        }
+
+        return $pageArray;
+    }
+    /**
+     * @return array
      */
     public function evaluate()
     {
-        if ($this->totalCount > 0 !== true) {
+        if ($this->totalCount > 0 !== true || $this->numberOfPages === 1) {
             return [];
         }
-        $numberOfPages = $this->getNumberOfPages();
-        $pageArray = $this->getPageRangeArray($numberOfPages);
-        if ($pageArray[0] > 2) {
-            array_unshift($pageArray, "...");
-            array_unshift($pageArray, 1);
+
+        $pageArray = $this->getPageArray();
+
+        if ($this->paginationConfig['showSeperators']) {
+            $pageArray = $this->addItemToTheStartOfPageArray($pageArray, false, 'seperator');
+            $pageArray = $this->addItemToTheEndOfPageArray($pageArray, false, 'seperator');
         }
-        if (end($pagesArray) + 1 < $numberOfPages) {
-            $links[] = "...";
-            $links[] = $numberOfPages;
+        if ($this->paginationConfig['showNextAndPrevious']) {
+            $pageArray = $this->addItemToTheStartOfPageArray($pageArray, $this->currentPage - 1, 'previous');
+            $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->currentPage + 1, 'next');
         }
-        return $links;
+        if ($this->paginationConfig['showFirstAndLast']) {
+            $pageArray = $this->addItemToTheStartOfPageArray($pageArray, 1, 'first');
+            $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->numberOfPages, 'last');
+        }
+        return $pageArray;
     }
 }

@@ -1,0 +1,32 @@
+prototype(Breadlesscode.Listable:Collection) < prototype(Neos.Fusion:Component) {
+    collection = ${ [] }
+    currentPage = ${ 1 }
+    itemsPerPage= ${ 15 }
+    paginate = ${ false }
+
+    @context.limit = ${ this.currentPage * this.itemsPerPage }
+    @context.offset = ${ (this.currentPage - 1) * this.itemsPerPage }
+
+    renderer = Neos.Fusion:Case {
+        # elastic search pagination implementation
+        elasticSearch {
+            condition = ${ Type.instance(props.collection, 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder') }
+            renderer = ${ props.collection }
+            renderer.@process {
+                limitAndOffset = ${ value.limit(limit).from(offset) }
+                limitAndOffset.@if.isPaginated = ${ props.paginate }
+                execute = ${ value.execute() }
+            }
+        }
+        # default flow query implementaion
+        default {
+            condition = ${ true }
+            renderer = ${ Type.instance(props.collection, 'Neos\Eel\FlowQuery\FlowQuery') ? props.collection : q(props.collection) }
+            renderer.@process {
+                slice = ${ value.slice(offset, limit) }
+                slice.@if.isPaginated = ${ props.paginate }
+                execute = ${ value.get() }
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+prototype(Breadlesscode.Listable:Pagination) < prototype(Neos.Fusion:Component) {
+    currentPage = ''
+    maximumNumberOfLinks = ''
+    totalCount = ''
+    itemsPerPage = ''
+    paginationConfig = ${ [] }
+
+    @process.wrapPagination = ${ '<ul class="pagination">' + value + '</ul>' }
+
+    renderer = Neos.Fusion:Collection {
+        collection = Breadlesscode.Listable:PaginationArray {
+            currentPage = ${ props.currentPage }
+            maximumNumberOfLinks = ${ props.maximumNumberOfLinks }
+            totalCount = ${ props.totalCount }
+            itemsPerPage = ${ props.itemsPerPage }
+            paginationConfig = ${ props.paginationConfig }
+        }
+
+        itemRenderer = Breadlesscode.Listable:PaginationItem {
+            uri = Neos.Neos:NodeUri {
+                node = ${ documentNode }
+                additionalParams = Neos.Fusion:RawArray {
+                    currentPage = ${ item.page }
+                }
+                @if.noSperator = ${ item.page }
+            }
+            label = ${ item.label }
+            typeClass = ${ item.type }
+        }
+    }
+}

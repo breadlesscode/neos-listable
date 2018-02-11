@@ -1,47 +1,39 @@
 prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
-    paginated = ${ false }
     collection = ${ [] }
     itemsPerPage = ${ 10 }
     itemRenderer = 'Breadlesscode.Listable:ListItem'
+    itemName = ${ 'item' }
+    paginated = ${ true }
+    paginationConfig = Breadlesscode.Listable:PaginationConfig
 
-    _currentPage = ${request.arguments.currentPage || 1}
+    @context.currentPage = ${request.arguments.currentPage || 1}
 
     renderer = Neos.Fusion:Array {
-        @context.data = Neos.Fusion:RawArray {
-            collection = Neos.Fusion:Case {
-                @context.limit = ${props._currentPage * props.itemsPerPage}
-                @context.offset = ${(props._currentPage - 1) * props.itemsPerPage}
-                elasticSearch {
-                    condition = ${Type.instance(props.collection, 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder')}
-                    renderer = ${props.collection}
-                    renderer.@process.limitAndOffset = ${value.limit(limit).from(offset)}
-                    renderer.@process.limitAndOffset.@if.paginated = ${ props.paginated }
-                    renderer.@process.execute = ${value.execute()}
-                }
-                default {
-                    condition = ${true}
-                    renderer = ${Type.instance(props.collection, 'Neos\Eel\FlowQuery\FlowQuery') ? props.collection : q(props.collection)}
-                    renderer.@process.slice = ${value.slice(offset, limit)}
-                    renderer.@process.slice.@if.paginated = ${ props.paginated }
-                    renderer.@process.execute = ${value.get()}
-                }
+        @context.collection = Neos.Fusion:RawArray {
+            items = Breadlesscode.Listable:Collection {
+                collection = ${ props.collection }
+                currentPage = ${ currentPage }
+                itemsPerPage= ${ props.itemsPerPage }
+                paginate = ${ props.paginated }
             }
-            totalCount = ${Type.getType(props.collection) == 'array' ? q(props.collection).count() : props.collection.count()}
+            totalCount = ${ Type.getType(props.collection) == 'array' ? q(props.collection).count() : props.collection.count() }
         }
         list = Neos.Fusion:Collection {
-            collection = ${ data.collection }
-            itemName = 'item'
-            itemRenderer = Neos.Fusion:Case {
-                prop {
-                    condition = ${true}
-                    type = ${ props.itemRenderer }
-                }
+            collection = ${ collection.items }
+            itemName = ${ props.itemName }s
+            itemRenderer = Neos.Fusion:Renderer {
+                type = ${ props.itemRenderer }
             }
         }
-        pagination >
+        pagination = Breadlesscode.Listable:Pagination {
+            currentPage = ${ currentPage }
+            maximumNumberOfLinks = ${ 3 }
+            totalCount = ${ collection.totalCount }
+            itemsPerPage = ${ props.itemsPerPage }
+            paginationConfig = ${ props.paginationConfig }
+        }
     }
-    
-    
+
     @cache {
         mode = 'dynamic'
         entryIdentifier {

@@ -5,9 +5,21 @@ Neos:
         'Breadlesscode.Listable':
           position: 'before Neos.Neos'
           variables:
-            pageSeparator: '~p'
+            parameterName: 'page'
             defaultUriSuffix: '.html'
   Neos:
     fusion:
       autoInclude:
         Breadlesscode.Listable: true
+Breadlesscode:
+  Listable:
+    pagination:
+      showSeperators: true
+      showNextAndPrevious: true
+      showFirstAndLast: true
+      labels:
+        seperator: '&hellip;'
+        previous: '&lang;'
+        next: '&rang;'
+        first: '&laquo;'
+        last: '&raquo;'

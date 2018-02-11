@@ -1,0 +1,24 @@
+prototype(Breadlesscode.Listable:PaginationItem) < prototype(Neos.Fusion:Component) {
+    label = ${ false }
+    uri = ${ false }
+    typeClass = ${ '' }
+    linkClass = 'page-link'
+
+    renderer = Neos.Fusion:Tag {
+        tagName = ${ props.uri ? 'a' : 'span' }
+        content = ${ props.label }
+        attributes {
+            href = ${ props.uri }
+            href.@if.hasUri = ${ props.uri ? true : false }
+            class = ${ props.linkClass }
+        }
+
+        @process.itemWrap = Neos.Fusion:Tag {
+            tagName = 'li'
+            content = ${ value }
+            attributes {
+                class = ${ 'page-item ' + (props.uri ? '' : 'disabled ') + props.typeClass }
+            }
+        }
+    }
+}
