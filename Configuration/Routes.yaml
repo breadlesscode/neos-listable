@@ -1,6 +1,6 @@
 -
   name: 'Paginate for Breadlesscode.Listable'
-  uriPattern: '{node}<defaultUriSuffix>?<parameterName>={currentPage}'
+  uriPattern: '{node}<paginationUriSeperator>{currentPage}<defaultUriSuffix>'
   defaults:
     '@package': 'Neos.Neos'
     '@controller': 'Frontend\Node'

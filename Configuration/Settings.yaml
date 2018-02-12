@@ -5,7 +5,7 @@ Neos:
         'Breadlesscode.Listable':
           position: 'before Neos.Neos'
           variables:
-            parameterName: 'page'
+            paginationUriSeperator: '--page'
             defaultUriSuffix: '.html'
   Neos:
     fusion:

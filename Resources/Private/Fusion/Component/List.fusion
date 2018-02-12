@@ -6,7 +6,7 @@ prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
     paginated = ${ true }
     paginationConfig = Breadlesscode.Listable:PaginationConfig
 
-    @context.currentPage = ${request.arguments.currentPage || 1}
+    @context.currentPage = ${ request.arguments.currentPage || 1 }
 
     renderer = Neos.Fusion:Array {
         @context.collection = Neos.Fusion:RawArray {

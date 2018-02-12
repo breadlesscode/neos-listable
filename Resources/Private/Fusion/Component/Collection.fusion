@@ -18,7 +18,7 @@ prototype(Breadlesscode.Listable:Collection) < prototype(Neos.Fusion:Component) 
                 execute = ${ value.execute() }
             }
         }
-        # default flow query implementaion
+        # default flow query and array implementaion
         default {
             condition = ${ true }
             renderer = ${ Type.instance(props.collection, 'Neos\Eel\FlowQuery\FlowQuery') ? props.collection : q(props.collection) }
