@@ -20,7 +20,7 @@ prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
         }
         list = Neos.Fusion:Collection {
             collection = ${ collection.items }
-            itemName = ${ props.itemName }s
+            itemName = ${ props.itemName }
             itemRenderer = Neos.Fusion:Renderer {
                 type = ${ props.itemRenderer }
             }
