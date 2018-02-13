@@ -31,6 +31,8 @@ prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
             totalCount = ${ collection.totalCount }
             itemsPerPage = ${ props.itemsPerPage }
             paginationConfig = ${ props.paginationConfig }
+
+            @if.shouldPaginate = ${ props.paginated }
         }
     }
 
