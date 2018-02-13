@@ -6,6 +6,7 @@ prototype(Breadlesscode.Listable:Pagination) < prototype(Neos.Fusion:Component) 
     paginationConfig = ${ [] }
 
     @process.wrapPagination = ${ '<ul class="pagination">' + value + '</ul>' }
+    @if.hasOnlyOnePage = ${ props.totalCount > props.itemsPerPage }
 
     renderer = Neos.Fusion:Collection {
         collection = Breadlesscode.Listable:PaginationArray {
@@ -15,7 +16,6 @@ prototype(Breadlesscode.Listable:Pagination) < prototype(Neos.Fusion:Component) 
             itemsPerPage = ${ props.itemsPerPage }
             paginationConfig = ${ props.paginationConfig }
         }
-
         itemRenderer = Breadlesscode.Listable:PaginationItem {
             uri = Neos.Neos:NodeUri {
                 node = ${ documentNode }
