@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="Breadlesscode.Listable" source-language="en" target-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="label" xml:space="preserve">
+                <source>Pagination Navigation</source>
+                <target xml:lang="de">Seitennavigation</target>
+            </trans-unit>
+            <trans-unit id="item.label" xml:space="preserve">
+                <source>Goto Page </source>
+                <target xml:lang="de">Gehe zu Seite </target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

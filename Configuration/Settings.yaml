@@ -11,6 +11,11 @@ Neos:
     fusion:
       autoInclude:
         Breadlesscode.Listable: true
+    userInterface:
+      translation:
+        autoInclude:
+          'Breadlesscode.Listable':
+            - '*'
 Breadlesscode:
   Listable:
     pagination:
