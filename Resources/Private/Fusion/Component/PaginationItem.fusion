@@ -18,7 +18,7 @@ prototype(Breadlesscode.Listable:PaginationItem) < prototype(Neos.Fusion:Compone
             aria-label.@if.hasUri = ${ props.uri ? true : false }
 
             aria-current= ${ "true" }
-            aria-current.@if.isCurrent = ${ props.isCurrent }
+            aria-current.@if.isCurrent = ${ props.isCurrent ? true : false }
         }
 
         @process.itemWrap = Neos.Fusion:Tag {
