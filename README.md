@@ -50,7 +50,9 @@ Breadlesscode:
     pagination:
       showSeperators: true
       showNextAndPrevious: true
+      alwaysShowNextAndPrevious: true
       showFirstAndLast: true
+      alwaysShowFirstAndLast: true
       labels:
         seperator: '&hellip;'
         previous: '&lang;'
@@ -67,7 +69,9 @@ prototype(Vendor.Xy:MyPersonalList) < prototype(Breadlesscode.Listable:List) {
     paginationConfig {
         showSeperators = ${ true }
         showNextAndPrevious = ${ true }
+        alwaysShowNextAndPrevious = ${ true }
         showFirstAndLast = ${ true }
+        alwaysShowFirstAndLast = ${ true }
 
         labels {
             seperator = ${ '&hellip' }
