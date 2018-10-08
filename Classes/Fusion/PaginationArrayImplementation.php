@@ -96,13 +96,11 @@ class PaginationArrayImplementation extends AbstractFusionObject
      */
     protected function addItemToTheStartOfPageArray($pageArray, $page, $type)
     {
-        if ($this->firstPage > 1) {
-            array_unshift($pageArray, [
-                'page' => $page,
-                'label' => $this->paginationConfig['labels'][$type],
-                'type' => $type
-            ]);
-        }
+        array_unshift($pageArray, [
+            'page' => $page,
+            'label' => $this->paginationConfig['labels'][$type],
+            'type' => $type
+        ]);
 
         return $pageArray;
     }
@@ -116,13 +114,11 @@ class PaginationArrayImplementation extends AbstractFusionObject
      */
     protected function addItemToTheEndOfPageArray($pageArray, $page, $type)
     {
-        if ($this->lastPage  < $this->numberOfPages) {
-            $pageArray[] = [
-                'page' => $page,
-                'label' => $this->paginationConfig['labels'][$type],
-                'type' => $type
-            ];
-        }
+        $pageArray[] = [
+            'page' => $page,
+            'label' => $this->paginationConfig['labels'][$type],
+            'type' => $type
+        ];
 
         return $pageArray;
     }
@@ -136,18 +132,31 @@ class PaginationArrayImplementation extends AbstractFusionObject
         }
 
         $pageArray = $this->getPageArray();
-
+        // add seperators
         if ($this->paginationConfig['showSeperators']) {
-            $pageArray = $this->addItemToTheStartOfPageArray($pageArray, false, 'seperator');
-            $pageArray = $this->addItemToTheEndOfPageArray($pageArray, false, 'seperator');
+            if ($this->firstPage > 1) {
+                $pageArray = $this->addItemToTheStartOfPageArray($pageArray, false, 'seperator');
+            }
+            if ($this->lastPage  < $this->numberOfPages) {
+                $pageArray = $this->addItemToTheEndOfPageArray($pageArray, false, 'seperator');
+            }
         }
+        // add previous and next
         if ($this->paginationConfig['showNextAndPrevious']) {
-            $pageArray = $this->addItemToTheStartOfPageArray($pageArray, $this->currentPage - 1, 'previous');
-            $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->currentPage + 1, 'next');
+            if ($this->firstPage > 1 || $this->paginationConfig['alwaysShowNextAndPrevious']) {
+                $pageArray = $this->addItemToTheStartOfPageArray($pageArray, $this->currentPage - 1, 'previous');
+            }
+            if ($this->lastPage  < $this->numberOfPages || $this->paginationConfig['alwaysShowNextAndPrevious']) {
+                $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->currentPage + 1, 'next');
+            }
         }
         if ($this->paginationConfig['showFirstAndLast']) {
-            $pageArray = $this->addItemToTheStartOfPageArray($pageArray, 1, 'first');
-            $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->numberOfPages, 'last');
+            if ($this->firstPage > 1 || $this->paginationConfig['alwaysShowFirstAndLast']) {
+                $pageArray = $this->addItemToTheStartOfPageArray($pageArray, 1, 'first');
+            }
+            if ($this->lastPage  < $this->numberOfPages || $this->paginationConfig['alwaysShowFirstAndLast']) {
+                $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->numberOfPages, 'last');
+            }
         }
         return $pageArray;
     }

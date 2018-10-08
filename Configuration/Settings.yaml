@@ -21,7 +21,9 @@ Breadlesscode:
     pagination:
       showSeperators: true
       showNextAndPrevious: true
+      alwaysShowNextAndPrevious: false
       showFirstAndLast: true
+      alwaysShowFirstAndLast: false
       labels:
         seperator: '&hellip;'
         previous: '&lang;'
