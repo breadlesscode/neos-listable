@@ -147,7 +147,11 @@ class PaginationArrayImplementation extends AbstractFusionObject
                 $pageArray = $this->addItemToTheStartOfPageArray($pageArray, $this->currentPage - 1, 'previous');
             }
             if ($this->lastPage  < $this->numberOfPages || $this->paginationConfig['alwaysShowNextAndPrevious']) {
-                $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->currentPage + 1, 'next');
+                if($this->currentPage < $this->numberOfPages) {
+                    $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->currentPage + 1, 'next');
+                } else {
+                    $pageArray = $this->addItemToTheEndOfPageArray($pageArray, $this->currentPage, 'next');
+                }
             }
         }
         if ($this->paginationConfig['showFirstAndLast']) {
