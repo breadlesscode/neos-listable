@@ -35,17 +35,4 @@ prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
             @if.shouldPaginate = ${ props.paginated }
         }
     }
-
-    @cache {
-        mode = 'dynamic'
-        entryIdentifier {
-            node = ${node}
-        }
-        entryDiscriminator = ${ request.arguments.currentPage }
-        context {
-            1 = 'node'
-            2 = 'documentNode'
-            3 = 'site'
-        }
-    }
 }
