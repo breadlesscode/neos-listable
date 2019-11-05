@@ -9,7 +9,7 @@ prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
     @context.currentPage = ${ request.arguments.currentPage || 1 }
 
     renderer = Neos.Fusion:Join {
-        @context.collection = Neos.Fusion:RawArray {
+        @context.collection = Neos.Fusion:DataStructure {
             items = Breadlesscode.Listable:Collection {
                 collection = ${ props.collection }
                 currentPage = ${ currentPage }

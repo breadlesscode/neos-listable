@@ -1,11 +1,11 @@
-prototype(Breadlesscode.Listable:PaginationConfig) < prototype(Neos.Fusion:RawArray) {
+prototype(Breadlesscode.Listable:PaginationConfig) < prototype(Neos.Fusion:DataStructure) {
     showSeperators = ${ Configuration.setting('Breadlesscode.Listable.pagination.showSeperators') }
     showNextAndPrevious = ${ Configuration.setting('Breadlesscode.Listable.pagination.showNextAndPrevious') }
     alwaysShowNextAndPrevious = ${ Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowNextAndPrevious') }
     showFirstAndLast = ${ Configuration.setting('Breadlesscode.Listable.pagination.showFirstAndLast') }
     alwaysShowFirstAndLast = ${ Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowFirstAndLast') }
 
-    labels = Neos.Fusion:RawArray {
+    labels = Neos.Fusion:DataStructure {
         seperator = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.seperator') }
         previous = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.previous') }
         next = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.next') }

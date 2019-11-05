@@ -22,7 +22,7 @@ prototype(Breadlesscode.Listable:Pagination) < prototype(Neos.Fusion:Component) 
             isCurrent = ${ String.toInteger(props.currentPage) == String.toInteger(item.page) }
             uri = Neos.Neos:NodeUri {
                 node = ${ documentNode }
-                additionalParams = Neos.Fusion:RawArray {
+                additionalParams = Neos.Fusion:DataStructure {
                     currentPage = ${ item.page }
                 }
                 @if.noSperator = ${ item.page }
