@@ -1,6 +1,7 @@
 prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
     collection = ${ [] }
-    limit = ${ 10 }
+    itemsPerPage = 10 # deprecated please use limit instead
+    limit = ${ this.itemsPerPage }
     itemRenderer = 'Breadlesscode.Listable:ListItem'
     itemName = ${ 'item' }
     paginated = ${ true }
