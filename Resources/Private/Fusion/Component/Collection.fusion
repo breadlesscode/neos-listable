@@ -1,11 +1,11 @@
 prototype(Breadlesscode.Listable:Collection) < prototype(Neos.Fusion:Component) {
     collection = ${ [] }
     currentPage = ${ 1 }
-    itemsPerPage= ${ 15 }
+    limit = ${ 15 }
     paginate = ${ false }
 
-    @context.limit = ${ this.currentPage * this.itemsPerPage }
-    @context.offset = ${ (this.currentPage - 1) * this.itemsPerPage }
+    @context.limit = ${ this.currentPage * this.limit }
+    @context.offset = ${ (this.currentPage - 1) * this.limit }
 
     renderer = Neos.Fusion:Case {
         # elastic search pagination implementation
@@ -15,7 +15,12 @@ prototype(Breadlesscode.Listable:Collection) < prototype(Neos.Fusion:Component) 
             renderer.@process {
                 limitAndOffset = ${ value.limit(limit).from(offset) }
                 limitAndOffset.@if.isPaginated = ${ props.paginate }
-                execute = ${ value.execute() }
+
+                limits = ${ value.limit(limit) }
+                limits.@if.isNotPaginated = ${ !props.paginate && limit >= 1  }
+
+                execute = ${ value }
+                executee = ${ value.execute() }
             }
         }
         # default flow query and array implementaion
@@ -25,6 +30,10 @@ prototype(Breadlesscode.Listable:Collection) < prototype(Neos.Fusion:Component) 
             renderer.@process {
                 slice = ${ value.slice(offset, limit) }
                 slice.@if.isPaginated = ${ props.paginate }
+
+                limits = ${ value.limit(0, limit) }
+                limits.@if.isNotPaginated = ${ !props.paginate && limit >= 1  }
+
                 execute = ${ value.get() }
             }
         }

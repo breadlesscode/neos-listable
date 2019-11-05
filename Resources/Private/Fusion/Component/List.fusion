@@ -1,6 +1,6 @@
 prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
     collection = ${ [] }
-    itemsPerPage = ${ 10 }
+    limit = ${ 10 }
     itemRenderer = 'Breadlesscode.Listable:ListItem'
     itemName = ${ 'item' }
     paginated = ${ true }
@@ -8,12 +8,12 @@ prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
 
     @context.currentPage = ${ request.arguments.currentPage || 1 }
 
-    renderer = Neos.Fusion:Array {
+    renderer = Neos.Fusion:Join {
         @context.collection = Neos.Fusion:RawArray {
             items = Breadlesscode.Listable:Collection {
                 collection = ${ props.collection }
                 currentPage = ${ currentPage }
-                itemsPerPage= ${ props.itemsPerPage }
+                limit = ${ props.limit }
                 paginate = ${ props.paginated }
             }
             totalCount = ${ Type.getType(props.collection) == 'array' ? q(props.collection).count() : props.collection.count() }
@@ -29,7 +29,7 @@ prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
             currentPage = ${ currentPage }
             maximumNumberOfLinks = ${ 3 }
             totalCount = ${ collection.totalCount }
-            itemsPerPage = ${ props.itemsPerPage }
+            itemsPerPage = ${ props.limit }
             paginationConfig = ${ props.paginationConfig }
 
             @if.shouldPaginate = ${ props.paginated }
