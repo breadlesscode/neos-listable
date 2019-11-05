@@ -11,7 +11,7 @@ This package is heavily inspired by [Flowpack.Listable](https://github.com/Flowp
 ## Installation
 Most of the time you have to make small adjustments to a package (e.g., the configuration in Settings.yaml). Because of that, it is important to add the corresponding package to the composer from your theme package. Mostly this is the site package located under Packages/Sites/. To install it correctly go to your theme package (e.g.Packages/Sites/Foo.Bar) and run following command:
 
-*Important*: If you use a Neos Version >5 you should require version 1 of this package. 
+**Important**: If you use a Neos Version >5 you should require version 1 of this package. 
 
 ```bash
 composer require breadlesscode/neos-listable --no-update
