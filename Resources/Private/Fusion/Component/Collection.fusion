@@ -31,7 +31,7 @@ prototype(Breadlesscode.Listable:Collection) < prototype(Neos.Fusion:Component) 
                 slice = ${ value.slice(offset, limit) }
                 slice.@if.isPaginated = ${ props.paginate }
 
-                limits = ${ value.limit(0, limit) }
+                limits = ${ value.slice(0, limit) }
                 limits.@if.isNotPaginated = ${ !props.paginate && limit >= 1  }
 
                 execute = ${ value.get() }
