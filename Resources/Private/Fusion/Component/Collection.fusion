@@ -4,8 +4,8 @@ prototype(Breadlesscode.Listable:Collection) < prototype(Neos.Fusion:Component) 
     limit = ${ 15 }
     paginate = ${ false }
 
-    @context.limit = ${ this.currentPage * this.limit }
-    @context.offset = ${ (this.currentPage - 1) * this.limit }
+    @context.limit = ${this.limit}
+    @context.offset = ${(this.currentPage - 1) * this.limit}
 
     renderer = Neos.Fusion:Case {
         # elastic search pagination implementation
