@@ -44,7 +44,7 @@ prototype(Vendor.Xy:MyPersonalListItem)  < prototype(Neos.Fusion:Tag) {
 
 ```
 ## Configuration
-You have to possibilities to configure the pagination of this package. You can set the configurations global via `Settings.yaml`:
+You have two possibilities to configure the pagination of this package. You can set the configurations global via `Settings.yaml`:
 
 ```yaml
 Breadlesscode:
