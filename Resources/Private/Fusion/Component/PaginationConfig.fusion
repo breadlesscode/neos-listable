@@ -3,7 +3,9 @@ prototype(Breadlesscode.Listable:PaginationConfig) < prototype(Neos.Fusion:DataS
     showNextAndPrevious = ${ Configuration.setting('Breadlesscode.Listable.pagination.showNextAndPrevious') }
     alwaysShowNextAndPrevious = ${ Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowNextAndPrevious') }
     showFirstAndLast = ${ Configuration.setting('Breadlesscode.Listable.pagination.showFirstAndLast') }
+    showFirstAndLastNumeric = ${ Configuration.setting('Breadlesscode.Listable.pagination.showFirstAndLastNumeric') }
     alwaysShowFirstAndLast = ${ Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowFirstAndLast') }
+    numberOfLinks = ${ Configuration.setting('Breadlesscode.Listable.pagination.numberOfLinks') }
 
     labels = Neos.Fusion:DataStructure {
         seperator = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.seperator') }

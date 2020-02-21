@@ -26,7 +26,7 @@ prototype(Breadlesscode.Listable:Pagination) < prototype(Neos.Fusion:Component) 
                 additionalParams = Neos.Fusion:DataStructure {
                     currentPage = ${ item.page }
                 }
-                @if.noSperator = ${ item.page }
+                @if.noSeparator = ${ item.page }
             }
             label = ${ item.label }
             typeClass = ${ item.type }

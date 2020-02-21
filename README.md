@@ -44,7 +44,7 @@ prototype(Vendor.Xy:MyPersonalListItem)  < prototype(Neos.Fusion:Tag) {
 
 ```
 ## Configuration
-You have two possibilities to configure the pagination of this package. You can set the configurations global via `Settings.yaml`:
+You have to possibilities to configure the pagination of this package. You can set the configurations global via `Settings.yaml`:
 
 ```yaml
 Breadlesscode:
@@ -55,11 +55,13 @@ Breadlesscode:
       alwaysShowNextAndPrevious: true
       showFirstAndLast: true
       alwaysShowFirstAndLast: true
+      alwaysShowFirstAndLastNumeric: false
+      numberOfLinks: 3
       labels:
         seperator: '&hellip;'
         previous: '&lang;'
         next: '&rang;'
-        first: '&lang;'
+        first: '&laquo;'
         last: '&raquo;'
 ```
 
@@ -69,18 +71,20 @@ And you can overwrite this configuration in Fusion for a specific list:
 prototype(Vendor.Xy:MyPersonalList) < prototype(Breadlesscode.Listable:List) {
     # ...
     paginationConfig {
-        showSeperators = ${ true }
-        showNextAndPrevious = ${ true }
-        alwaysShowNextAndPrevious = ${ true }
-        showFirstAndLast = ${ true }
-        alwaysShowFirstAndLast = ${ true }
+        showSeperators = true
+        showNextAndPrevious = true
+        alwaysShowNextAndPrevious = true
+        showFirstAndLast = true
+        alwaysShowFirstAndLast = true
+        alwaysShowFirstAndLastNumeric = false
+        numberOfLinks = 3
 
         labels {
-            seperator = ${ '&hellip' }
-            previous = ${ '&lang;' }
-            next = ${ '&rang;' }
-            first = ${ '&lang;' }
-            last = ${ '&rang;' }
+            seperator = '&hellip'
+            previous = '&lang;'
+            next = '&rang;'
+            first = '&laquo;'
+            last = '&raquo;'
         }
     }
 }

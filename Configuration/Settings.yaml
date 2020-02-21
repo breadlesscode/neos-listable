@@ -23,7 +23,9 @@ Breadlesscode:
       showNextAndPrevious: true
       alwaysShowNextAndPrevious: false
       showFirstAndLast: true
+      showFirstAndLastNumeric: false
       alwaysShowFirstAndLast: false
+      numberOfLinks: 3
       labels:
         seperator: '&hellip;'
         previous: '&lang;'
