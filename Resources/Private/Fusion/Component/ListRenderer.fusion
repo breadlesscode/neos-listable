@@ -1,0 +1,11 @@
+prototype(Breadlesscode.Listable:ListRenderer) < prototype(Neos.Fusion:Component) {
+    renderer = afx`
+        <ul>
+            <Neos.Fusion:Loop items={items}>
+                <li>{item.properties.title}</li>
+            </Neos.Fusion:Loop>
+        </ul>
+
+        <nav class="pagination">{pagination}</nav>
+    `
+}

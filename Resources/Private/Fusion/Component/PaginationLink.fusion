@@ -1,0 +1,24 @@
+prototype(Breadlesscode.Listable:PaginationLink) < prototype(Neos.Fusion:Component) {
+    label = false
+    uri = false
+    page = false
+    isCurrent = false
+    isCurrentClass = 'current'
+    class = 'page-link'
+
+    renderer = Neos.Fusion:Tag {
+        tagName = ${props.uri ? 'a' : 'span'}
+        content = ${props.label}
+        attributes {
+            href = ${props.uri}
+            href.@if.hasUri = ${props.uri ? true : false}
+            class = ${props.class + (props.isCurrent ? ' ' + props.isCurrentClass : '')}
+
+            aria-label = ${Translation.translate('Breadlesscode.Listable:Accessibility:item.label') + props.page}
+            aria-label.@if.hasUri = ${props.uri ? true : false}
+
+            aria-current= 'true'
+            aria-current.@if.isCurrent = ${props.isCurrent ? true : false}
+        }
+    }
+}

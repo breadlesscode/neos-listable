@@ -1,35 +1,21 @@
 prototype(Breadlesscode.Listable:Pagination) < prototype(Neos.Fusion:Component) {
-    currentPage = ''
-    maximumNumberOfLinks = ''
-    totalCount = ''
-    itemsPerPage = ''
-    paginationConfig = ${ [] }
+    items = Breadlesscode.Listable:PaginationItems
+    itemCount = ${itemCount}
+    currentPage = ${currentPage}
 
-    @process.wrapPaginationUl = ${ '<ul class="pagination">' + value + '</ul>' }
-    @process.wrapPaginationNav = ${ '<nav role="navigation" aria-label="' + Translation.translate('Breadlesscode.Listable:Accessibility:label') + '">' + value + '</nav>' }
-    @if.hasOnlyOnePage = ${ this.totalCount > this.itemsPerPage }
-
-    renderer = Neos.Fusion:Collection {
-        collection = Breadlesscode.Listable:PaginationArray {
-            currentPage = ${ props.currentPage }
-            maximumNumberOfLinks = ${ props.maximumNumberOfLinks }
-            totalCount = ${ props.totalCount }
-            itemsPerPage = ${ props.itemsPerPage }
-            paginationConfig = ${ props.paginationConfig }
-        }
-        itemRenderer = Breadlesscode.Listable:PaginationItem {
-            page = ${ item.page }
-            isCurrent = ${ String.toInteger(props.currentPage) == String.toInteger(item.page) }
-            uri = Neos.Neos:NodeUri {
-                node = ${ documentNode }
-                addQueryString = true
-                additionalParams = Neos.Fusion:DataStructure {
-                    currentPage = ${ item.page }
-                }
-                @if.noSeparator = ${ item.page }
-            }
-            label = ${ item.label }
-            typeClass = ${ item.type }
-        }
-    }
+    renderer = afx`
+        <ul class="listable-pagination">
+            <Neos.Fusion:Loop items={props.items}>
+                <li class={"listable-pagination-item listable-pagination--" + item.type + (item.isCurrent ? ' current' : '')}>
+                    <Breadlesscode.Listable:PaginationLink
+                        label={item.label}
+                        uri={'?page=' + item.page}
+                        page={item.page}
+                        isCurrent={item.isCurrent}
+                        isCurrentClass='current'
+                        class='page-link' />
+                </li>
+            </Neos.Fusion:Loop>
+        </ul>
+    `
 }

@@ -1,40 +1,28 @@
-prototype(Breadlesscode.Listable:List) < prototype(Neos.Fusion:Component) {
-    collection = ${ [] }
-    // itemsPerPage is deprecated, please use limit instead
-    itemsPerPage = 10
-    limit = ${ this.itemsPerPage }
-    itemRenderer = 'Breadlesscode.Listable:ListItem'
-    itemName = ${ 'item' }
-    paginated = ${ true }
-    paginationConfig = Breadlesscode.Listable:PaginationConfig
+prototype(Breadlesscode.Listable:List) {
+    @class = 'Breadlesscode\\Listable\\FusionObjects\\ListImplementation'
 
-    @context.currentPage = ${ request.arguments.currentPage || 1 }
+    query = ${Search.query(site)}
+    paginated = true
+    itemsPerPage = 1
+    currentPage = ${request.arguments.page ? request.arguments.page : 1}
+    filters = Neos.Fusion:DataStructure
 
-    renderer = Neos.Fusion:Join {
-        @context.collection = Neos.Fusion:DataStructure {
-            items = Breadlesscode.Listable:Collection {
-                collection = ${ props.collection }
-                currentPage = ${ currentPage }
-                limit = ${ props.limit }
-                paginate = ${ props.paginated }
-            }
-            totalCount = ${ Type.getType(props.collection) == 'array' ? q(props.collection).count() : props.collection.count() }
+    renderer = Breadlesscode.Listable:ListRenderer
+    paginationRenderer = Breadlesscode.Listable:Pagination
+
+    @cache {
+        mode = 'dynamic'
+        entryDiscriminator = ${request.arguments.page}
+        entryIdentifier {
+            node = ${node}
         }
-        list = Neos.Fusion:Collection {
-            collection = ${ collection.items }
-            itemName = ${ props.itemName }
-            itemRenderer = Neos.Fusion:Renderer {
-                type = ${ props.itemRenderer }
-            }
+        context {
+            1 = 'node'
+            2 = 'documentNode'
+            3 = 'site'
         }
-        pagination = Breadlesscode.Listable:Pagination {
-            currentPage = ${ currentPage }
-            maximumNumberOfLinks = ${ props.paginationConfig.numberOfLinks }
-            totalCount = ${ collection.totalCount }
-            itemsPerPage = ${ props.limit }
-            paginationConfig = ${ props.paginationConfig }
-
-            @if.shouldPaginate = ${ props.paginated }
+        entryTags {
+            1 = ${Neos.Caching.nodeTag(node)}
         }
     }
 }

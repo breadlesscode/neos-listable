@@ -1,17 +1,17 @@
 prototype(Breadlesscode.Listable:PaginationConfig) < prototype(Neos.Fusion:DataStructure) {
-    showSeperators = ${ Configuration.setting('Breadlesscode.Listable.pagination.showSeperators') }
-    showNextAndPrevious = ${ Configuration.setting('Breadlesscode.Listable.pagination.showNextAndPrevious') }
-    alwaysShowNextAndPrevious = ${ Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowNextAndPrevious') }
-    showFirstAndLast = ${ Configuration.setting('Breadlesscode.Listable.pagination.showFirstAndLast') }
-    showFirstAndLastNumeric = ${ Configuration.setting('Breadlesscode.Listable.pagination.showFirstAndLastNumeric') }
-    alwaysShowFirstAndLast = ${ Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowFirstAndLast') }
-    numberOfLinks = ${ Configuration.setting('Breadlesscode.Listable.pagination.numberOfLinks') }
+    showSeparators = ${Configuration.setting('Breadlesscode.Listable.pagination.showSeparators')}
+    showNextAndPrevious = ${Configuration.setting('Breadlesscode.Listable.pagination.showNextAndPrevious')}
+    alwaysShowNextAndPrevious = ${Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowNextAndPrevious')}
+    showFirstAndLast = ${Configuration.setting('Breadlesscode.Listable.pagination.showFirstAndLast')}
+    showFirstAndLastNumeric = ${Configuration.setting('Breadlesscode.Listable.pagination.showFirstAndLastNumeric')}
+    alwaysShowFirstAndLast = ${Configuration.setting('Breadlesscode.Listable.pagination.alwaysShowFirstAndLast')}
+    numberOfLinks = ${Configuration.setting('Breadlesscode.Listable.pagination.numberOfLinks')}
 
     labels = Neos.Fusion:DataStructure {
-        seperator = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.seperator') }
-        previous = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.previous') }
-        next = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.next') }
-        first = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.first') }
-        last = ${ Configuration.setting('Breadlesscode.Listable.pagination.labels.last') }
+        separator = ${Configuration.setting('Breadlesscode.Listable.pagination.labels.separator')}
+        previous = ${Configuration.setting('Breadlesscode.Listable.pagination.labels.previous')}
+        next = ${Configuration.setting('Breadlesscode.Listable.pagination.labels.next')}
+        first = ${Configuration.setting('Breadlesscode.Listable.pagination.labels.first')}
+        last = ${Configuration.setting('Breadlesscode.Listable.pagination.labels.last')}
     }
 }

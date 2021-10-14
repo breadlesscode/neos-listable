@@ -1,8 +1,0 @@
-prototype(Breadlesscode.Listable:PaginationArray) {
-    @class = 'Breadlesscode\\Listable\\Fusion\\PaginationArrayImplementation'
-
-    currentPage = ''
-    maximumNumberOfLinks = ''
-    totalCount = ''
-    itemsPerPage = ''
-}

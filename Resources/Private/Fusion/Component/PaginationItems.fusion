@@ -1,0 +1,7 @@
+prototype(Breadlesscode.Listable:PaginationItems)  {
+    @class = 'Breadlesscode\\Listable\\FusionObjects\\PaginationItemsImplementation'
+    currentPage = ${currentPage}
+    itemsPerPage = ${itemsPerPage}
+    itemCount = ${itemCount}
+    config = Breadlesscode.Listable:PaginationConfig
+}

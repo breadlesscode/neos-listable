@@ -1,25 +1,7 @@
-Neos:
-  Flow:
-    mvc:
-      routes:
-        'Breadlesscode.Listable':
-          position: 'before Neos.Neos'
-          variables:
-            paginationUriSeperator: '--page'
-            defaultUriSuffix: '.html'
-  Neos:
-    fusion:
-      autoInclude:
-        Breadlesscode.Listable: true
-    userInterface:
-      translation:
-        autoInclude:
-          'Breadlesscode.Listable':
-            - '*'
 Breadlesscode:
   Listable:
     pagination:
-      showSeperators: true
+      showSeparators: true
       showNextAndPrevious: true
       alwaysShowNextAndPrevious: false
       showFirstAndLast: true
@@ -27,7 +9,7 @@ Breadlesscode:
       alwaysShowFirstAndLast: false
       numberOfLinks: 3
       labels:
-        seperator: '&hellip;'
+        separator: '&hellip;'
         previous: '&lang;'
         next: '&rang;'
         first: '&laquo;'

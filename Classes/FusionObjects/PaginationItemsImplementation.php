@@ -1,11 +1,11 @@
 <?php
 
-namespace Breadlesscode\Listable\Fusion;
+namespace Breadlesscode\Listable\FusionObjects;
 
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 use Neos\Fusion\Core\Runtime;
 
-class PaginationArrayImplementation extends AbstractFusionObject
+class PaginationItemsImplementation extends AbstractFusionObject
 {
     /**
      * @var int
@@ -26,7 +26,7 @@ class PaginationArrayImplementation extends AbstractFusionObject
     /**
      * @var array
      */
-    protected $paginationConfig;
+    protected $config;
     /**
      * @var int
      */
@@ -53,11 +53,10 @@ class PaginationArrayImplementation extends AbstractFusionObject
 
         $this->currentPage = (int) $this->fusionValue('currentPage');
         $this->itemsPerPage = (int) $this->fusionValue('itemsPerPage');
-        $this->itemCount = (int) $this->fusionValue('totalCount');
-        $this->maximumNumberOfLinks = (int) $this->fusionValue('maximumNumberOfLinks');
-        $this->paginationConfig = $this->fusionValue('paginationConfig');
-
-        $this->numberOfPages = \ceil($this->itemCount / $this->itemsPerPage);
+        $this->itemCount = (int) $this->fusionValue('itemCount');
+        $this->config = $this->fusionValue('config');
+        $this->maximumNumberOfLinks = (int) $this->config['numberOfLinks'];
+        $this->numberOfPages = (int) \ceil($this->itemCount / $this->itemsPerPage);
 
         $this->calculateFirstAndLastPage();
         $this->createPageArray();
@@ -83,9 +82,18 @@ class PaginationArrayImplementation extends AbstractFusionObject
         if ($lastPageShown > $this->numberOfPages) {
             $firstPageShown -= ($lastPageShown - $this->numberOfPages);
         }
-        // make sure the calculdated numbers are not out of range
+        // make sure the calculated numbers are not out of range
         $this->firstPageShown = \max($firstPageShown, 1);
         $this->lastPageShown = \min($lastPageShown, $this->numberOfPages);
+    }
+
+    /**
+     * @param int $page
+     * @return string
+     */
+    protected function isCurrentPage(int $page) : string
+    {
+        return $this->currentPage === $page;
     }
 
     /**
@@ -97,9 +105,10 @@ class PaginationArrayImplementation extends AbstractFusionObject
 
         foreach ($range as $page) {
             $this->pages[] = [
-                'page' => $page,
-                'label' => $page,
-                'type' => 'page'
+                'page' => (int) $page,
+                'label' => (string) $page,
+                'type' => 'page',
+                'isCurrent' => $this->isCurrentPage($page),
             ];
         }
     }
@@ -111,12 +120,13 @@ class PaginationArrayImplementation extends AbstractFusionObject
      * @param $label
      * @param string $type
      */
-    protected function addItemToTheStartOfPageArray($page, $label, $type)
+    protected function addItemToTheStartOfPageArray(int $page, string $label, string $type)
     {
         array_unshift($this->pages, [
             'page' => $page,
             'label' => $label,
-            'type' => $type
+            'type' => $type,
+            'isCurrent' => $this->isCurrentPage($page),
         ]);
     }
 
@@ -127,12 +137,13 @@ class PaginationArrayImplementation extends AbstractFusionObject
      * @param $label
      * @param $type
      */
-    protected function addItemToTheEndOfPageArray($page, $label, $type)
+    protected function addItemToTheEndOfPageArray(int $page, string $label, string $type)
     {
         $this->pages[] = [
             'page' => $page,
             'label' => $label,
-            'type' => $type
+            'type' => $type,
+            'isCurrent' => $this->isCurrentPage($page),
         ];
     }
 
@@ -145,47 +156,47 @@ class PaginationArrayImplementation extends AbstractFusionObject
             return [];
         }
         // add configured seperators
-        if ($this->paginationConfig['showSeperators']) {
+        if ($this->config['showSeparators']) {
             if ($this->firstPageShown > 1) {
-                $this->addItemToTheStartOfPageArray(false, $this->paginationConfig['labels']['seperator'], 'seperator');
+                $this->addItemToTheStartOfPageArray(false, $this->config['labels']['separator'], 'separator');
             }
             if ($this->lastPageShown  < $this->numberOfPages) {
-                $this->addItemToTheEndOfPageArray(false, $this->paginationConfig['labels']['seperator'], 'seperator');
+                $this->addItemToTheEndOfPageArray(false, $this->config['labels']['separator'], 'separator');
             }
         }
         // add numeric first & last links
-        if ($this->paginationConfig['showFirstAndLastNumeric']) {
-            if ($this->firstPageShown > 1 || $this->paginationConfig['alwaysShowFirstAndLast']) {
+        if ($this->config['showFirstAndLastNumeric']) {
+            if ($this->firstPageShown > 1 || $this->config['alwaysShowFirstAndLast']) {
                 $this->addItemToTheStartOfPageArray(1, 1, 'first');
             }
-            if ($this->lastPageShown  < $this->numberOfPages || $this->paginationConfig['alwaysShowFirstAndLast']) {
+            if ($this->lastPageShown  < $this->numberOfPages || $this->config['alwaysShowFirstAndLast']) {
                 $this->addItemToTheEndOfPageArray($this->numberOfPages, $this->numberOfPages, 'last');
             }
         }
         // add previous and next
-        if ($this->paginationConfig['showNextAndPrevious']) {
-            if ($this->currentPage > 1 || $this->paginationConfig['alwaysShowNextAndPrevious']) {
+        if ($this->config['showNextAndPrevious']) {
+            if ($this->currentPage > 1 || $this->config['alwaysShowNextAndPrevious']) {
                 if ($this->currentPage > 1) {
-                    $this->addItemToTheStartOfPageArray($this->currentPage - 1, $this->paginationConfig['labels']['previous'],'previous');
+                    $this->addItemToTheStartOfPageArray($this->currentPage - 1, $this->config['labels']['previous'],'previous');
                 } else {
-                    $this->addItemToTheStartOfPageArray(false, $this->paginationConfig['labels']['previous'],'previous');
+                    $this->addItemToTheStartOfPageArray(false, $this->config['labels']['previous'], 'previous');
                 }
             }
-            if ($this->currentPage < $this->lastPageShown || $this->paginationConfig['alwaysShowNextAndPrevious']) {
+            if ($this->currentPage < $this->lastPageShown || $this->config['alwaysShowNextAndPrevious']) {
                 if ($this->currentPage < $this->numberOfPages) {
-                    $this->addItemToTheEndOfPageArray($this->currentPage + 1, $this->paginationConfig['labels']['next'],  'next');
+                    $this->addItemToTheEndOfPageArray($this->currentPage + 1, $this->config['labels']['next'],  'next');
                 } else {
-                    $this->addItemToTheEndOfPageArray(false, $this->paginationConfig['labels']['next'],  'next');
+                    $this->addItemToTheEndOfPageArray(false, $this->config['labels']['next'], 'next');
                 }
             }
         }
         // add first & last link with configured label
-        if ($this->paginationConfig['showFirstAndLast']) {
-            if ($this->firstPageShown > 1 || $this->paginationConfig['alwaysShowFirstAndLast']) {
-                $this->addItemToTheStartOfPageArray(1, $this->paginationConfig['labels']['first'], 'first');
+        if ($this->config['showFirstAndLast']) {
+            if ($this->firstPageShown > 1 || $this->config['alwaysShowFirstAndLast']) {
+                $this->addItemToTheStartOfPageArray(1, $this->config['labels']['first'], 'first');
             }
-            if ($this->lastPageShown  < $this->numberOfPages || $this->paginationConfig['alwaysShowFirstAndLast']) {
-                $this->addItemToTheEndOfPageArray($this->numberOfPages, $this->paginationConfig['labels']['last'], 'last');
+            if ($this->lastPageShown  < $this->numberOfPages || $this->config['alwaysShowFirstAndLast']) {
+                $this->addItemToTheEndOfPageArray($this->numberOfPages, $this->config['labels']['last'], 'last');
             }
         }
 
