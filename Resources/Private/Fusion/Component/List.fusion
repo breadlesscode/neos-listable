@@ -5,8 +5,8 @@ prototype(Breadlesscode.Listable:List) {
     paginated = true
     itemsPerPage = 25
     currentPage = ${request.arguments.page ? request.arguments.page : 1}
-    filters = Neos.Fusion:DataStructure
 
+    filters = Breadlesscode.Listable:ListFilter
     renderer = Breadlesscode.Listable:ListRenderer
     paginationRenderer = Breadlesscode.Listable:Pagination
 
