@@ -3,7 +3,7 @@ prototype(Breadlesscode.Listable:List) {
 
     query = ${Search.query(site)}
     paginated = true
-    itemsPerPage = 1
+    itemsPerPage = 25
     currentPage = ${request.arguments.page ? request.arguments.page : 1}
     filters = Neos.Fusion:DataStructure
 
