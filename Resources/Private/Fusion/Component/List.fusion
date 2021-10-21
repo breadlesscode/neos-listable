@@ -7,6 +7,7 @@ prototype(Breadlesscode.Listable:List) {
     currentPage = ${request.arguments.page ? request.arguments.page : 1}
 
     filters = Breadlesscode.Listable:ListFilter
+    mapper = Breadlesscode.Listable:ItemMapper
     renderer = Breadlesscode.Listable:ListRenderer
     paginationRenderer = Breadlesscode.Listable:Pagination
 

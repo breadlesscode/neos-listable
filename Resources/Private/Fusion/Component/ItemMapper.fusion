@@ -1,0 +1,4 @@
+prototype(Breadlesscode.Listable:ItemMapper) < prototype(Neos.Fusion:Map) {
+    items = ${items}
+    itemRenderer = ${item}
+}
