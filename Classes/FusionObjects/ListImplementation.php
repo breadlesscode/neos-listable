@@ -61,14 +61,22 @@ class ListImplementation extends AbstractFusionObject
             $result = $this->getResults($query);
         }
 
-
         $this->runtime->pushContext('items', $result);
         $mappedResult = $this->fusionValue('mapper');
-        $this->runtime->popContext();
+        $this->runtime->popContext(); // pop items
         $this->runtime->pushContext('items', $mappedResult);
         $this->runtime->pushContext('pagination', $this->fusionValue('paginationRenderer'));
 
-        return $this->fusionValue('renderer');
+        $renderedResult =  $this->fusionValue('renderer');
+
+        $this->runtime->popContext(); // pop pagination
+        $this->runtime->popContext(); // pop items
+        $this->runtime->popContext(); // pop itemCount
+        $this->runtime->popContext(); // pop itemsPerPage
+        $this->runtime->popContext(); // pop currentPage
+        $this->runtime->popContext(); // pop query
+        
+        return $renderedResult;
     }
 
     /**
