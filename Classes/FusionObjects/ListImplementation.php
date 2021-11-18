@@ -87,7 +87,7 @@ class ListImplementation extends AbstractFusionObject
     protected function getPaginatedResults($query)
     {
         if ($query instanceof ElasticSearchQueryBuilder) {
-            return $this->paginateElasticSearchQuery($query)->execute()->toArray();
+            return $this->paginateElasticSearchQuery($query)->execute();
         } else if($query instanceof FlowQuery) {
             return $this->paginateFlowQuery($query)->get();
         }
